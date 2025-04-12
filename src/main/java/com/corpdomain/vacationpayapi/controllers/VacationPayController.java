@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Validated
 @Tag(name = "Vacation calculator", description = "API for calculating vacation pay")
 public class VacationPayController {
-	private IVacationPayCalculatorService vacationPayService;
+	private final IVacationPayCalculatorService vacationPayService;
 
 	public VacationPayController(IVacationPayCalculatorService vacationPayService) {
 		this.vacationPayService = vacationPayService;
