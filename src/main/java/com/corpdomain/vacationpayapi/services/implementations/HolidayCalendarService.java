@@ -10,7 +10,6 @@ import com.corpdomain.vacationpayapi.services.IHolidayCalendarService;
 @Service
 public class HolidayCalendarService implements IHolidayCalendarService {
 	public static final Set<LocalDate> HOLIDAYS = Set.of(
-			LocalDate.of(2025, 1, 7),
 			LocalDate.of(2025, 2, 23),
 			LocalDate.of(2025, 3, 8),
 			LocalDate.of(2025, 5, 1),
