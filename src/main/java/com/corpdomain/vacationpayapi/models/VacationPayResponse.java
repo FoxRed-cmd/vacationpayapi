@@ -1,4 +1,4 @@
-package com.corpdomain.vacationpayapi.dto;
+package com.corpdomain.vacationpayapi.models;
 
 import lombok.Data;
 

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.corpdomain.vacationpayapi.models.VacationParameters;
+import com.corpdomain.vacationpayapi.models.VacationRequestParameters;
 import com.corpdomain.vacationpayapi.services.IHolidayCalendarService;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +35,7 @@ public class VacationPayCalculatorServiceTest {
 
 	@Test
 	void testCalculateVacationPay_WithoutStartDate() {
-		VacationParameters vacationParams = new VacationParameters();
+		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
 		// 50000.00 / 29.3 * 14 = 23890.78
@@ -44,7 +44,7 @@ public class VacationPayCalculatorServiceTest {
 
 	@Test
 	void testCalculateVacationPay_WithStartDate() {
-		VacationParameters vacationParams = new VacationParameters();
+		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
 		vacationParams.setStartDate(START_DATE_WITH_HOLIDAY);
@@ -58,7 +58,7 @@ public class VacationPayCalculatorServiceTest {
 
 	@Test
 	void testCalculateVacationPay_WithoutHolidays() {
-		VacationParameters vacationParams = new VacationParameters();
+		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
 		vacationParams.setStartDate(START_DATE);

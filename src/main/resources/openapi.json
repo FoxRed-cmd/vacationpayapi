@@ -53,13 +53,13 @@
 						{
 							"name": "startDate",
 							"in": "query",
-							"description": "The date from which the vacation begins in the format: YYYY-MM-DD",
+							"description": "The date from which the vacation begins in the format: dd.MM.yyyy",
 							"required": false,
 							"schema": {
 								"type": "string",
 								"format": "date"
 							},
-							"example": "2025-04-01"
+							"example": "01.04.2025"
 						}
 					],
 					"responses": {

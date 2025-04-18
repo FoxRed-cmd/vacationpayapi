@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import com.corpdomain.vacationpayapi.models.VacationParameters;
+import com.corpdomain.vacationpayapi.models.VacationRequestParameters;
 import com.corpdomain.vacationpayapi.services.IHolidayCalendarService;
 import com.corpdomain.vacationpayapi.services.IVacationPayCalculatorService;
 
@@ -20,7 +20,7 @@ public class VacationPayCalculatorService implements IVacationPayCalculatorServi
 	}
 
 	@Override
-	public double calculateVacationPay(VacationParameters request) {
+	public double calculateVacationPay(VacationRequestParameters request) {
 		if (request.getStartDate() == null) {
 			return calculate(request.getAverageSalary(), request.getVacationDays());
 		}
