@@ -62,6 +62,12 @@
     		<version>2.2.30</version>
 		</dependency>
 		<dependency>
+		    <groupId>io.swagger.parser.v3</groupId>
+		    <artifactId>swagger-parser-v3</artifactId>
+		    <version>2.1.26</version>
+		</dependency>
+
+		<dependency>
     		<groupId>org.springdoc</groupId>
     		<artifactId>springdoc-openapi-ui</artifactId>
     		<version>1.8.0</version>

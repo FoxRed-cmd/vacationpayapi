@@ -1,0 +1,93 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+			"title": "API Vacation Pay Calculator",
+			"description": "API for calculating the amount of vacation pay",
+			"version": "1.0"
+		},
+		"servers": [
+			{
+				"url": "http://localhost:8888",
+				"description": "Generated server url"
+			}
+		],
+		"tags": [
+			{
+				"name": "Vacation calculator",
+				"description": "API for calculating vacation pay"
+			}
+		],
+		"paths": {
+			"/calculate": {
+				"get": {
+					"tags": [
+						"Vacation calculator"
+					],
+					"summary": "Calculate vacation pay",
+					"description": "Returns the amount of vacation pay based on average salary and vacation days",
+					"operationId": "calculateVacationPay",
+					"parameters": [
+						{
+							"name": "averageSalary",
+							"in": "query",
+							"description": "Average salary for 12 months",
+							"required": true,
+							"schema": {
+								"type": "number",
+								"format": "double"
+							},
+							"example": 24544.98
+						},
+						{
+							"name": "vacationDays",
+							"in": "query",
+							"description": "Number of vacation days",
+							"required": true,
+							"schema": {
+								"minimum": 1,
+								"type": "integer",
+							"format": "int32"
+							},
+							"example": 14
+						},
+						{
+							"name": "startDate",
+							"in": "query",
+							"description": "The date from which the vacation begins in the format: YYYY-MM-DD",
+							"required": false,
+							"schema": {
+								"type": "string",
+								"format": "date"
+							},
+							"example": "2025-04-01"
+						}
+					],
+					"responses": {
+						"200": {
+							"description": "OK",
+							"content": {
+								"*/*": {
+									"schema": {
+										"$ref": "#/components/schemas/VacationPayResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"VacationPayResponse": {
+					"type": "object",
+					"properties": {
+						"vacationPay": {
+						"type": "number",
+						"format": "double"
+					}
+				}
+			}
+		}
+	}
+}
