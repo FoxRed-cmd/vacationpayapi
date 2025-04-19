@@ -23,13 +23,13 @@ public class VacationPayCalculatorService implements IVacationPayCalculatorServi
 	public double calculateVacationPay(VacationRequestParameters request) {
 		if (request.getStartDate() == null) {
 			return calculate(request.getAverageSalary(), request.getVacationDays());
-		}
-		else {
+		} else {
 			int countDays = request.getVacationDays();
 			LocalDate startDate = request.getStartDate();
 
-			for (int i = 0; i <= request.getVacationDays(); i++) {
-				if (holidayCalendar.isHoliday(startDate.plusDays(i))) {
+			for (int i = 0; i < request.getVacationDays(); i++) {
+				LocalDate nextDate = startDate.plusDays(i);
+				if (holidayCalendar.isHoliday(nextDate)) {
 					countDays -= 1;
 				}
 			}

@@ -1,10 +1,6 @@
 package com.corpdomain.vacationpayapi.services.implementations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
-
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,24 +8,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.corpdomain.vacationpayapi.helpers.Holiday;
 import com.corpdomain.vacationpayapi.models.VacationRequestParameters;
 import com.corpdomain.vacationpayapi.services.IHolidayCalendarService;
 
 @ExtendWith(MockitoExtension.class)
-public class VacationPayCalculatorServiceTest {
+public class VacationPayControllerTest {
 	private static final double AVERAGE_SALARY = 50000.0;
 	private static final int VACATION_DAYS = 14;
-	private static final LocalDate START_DATE = LocalDate.of(2025, 4, 1);
-	private static final LocalDate START_DATE_WITH_HOLIDAY = LocalDate.of(2025, 6, 1);
-	private static final LocalDate HOLIDAY_DATE = LocalDate.of(2025, 6, 12);
 
-	IHolidayCalendarService holidayCalendarService;
+	private IHolidayCalendarService holidayCalendarService;
 
-	VacationPayCalculatorService payCalculationService;
+	private VacationPayCalculatorService payCalculationService;
 
 	@BeforeEach
 	void setUp() {
-		holidayCalendarService = mock(IHolidayCalendarService.class, withSettings().lenient());
+		holidayCalendarService = new HolidayCalendarService();
 		payCalculationService = new VacationPayCalculatorService(holidayCalendarService);
 	}
 
@@ -38,6 +32,7 @@ public class VacationPayCalculatorServiceTest {
 		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
+
 		// 50000.00 / 29.3 * 14 = 23890.78
 		assertEquals(23890.78, payCalculationService.calculateVacationPay(vacationParams));
 	}
@@ -47,13 +42,23 @@ public class VacationPayCalculatorServiceTest {
 		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
-		vacationParams.setStartDate(START_DATE_WITH_HOLIDAY);
+		vacationParams.setStartDate(LocalDate.of(2025, 5, 1));
 
-		when(holidayCalendarService.isHoliday(START_DATE)).thenReturn(true);
-		when(holidayCalendarService.isHoliday(HOLIDAY_DATE)).thenReturn(true);
+		// 50000.00 / 29.3 * 14 - 2(Holiday) = 20477.82
+		assertEquals(20477.82, payCalculationService.calculateVacationPay(vacationParams));
+	}
 
-		// 50000.00 / 29.3 * 14 - 1(Holiday) = 22184.30
-		assertEquals(22184.30, payCalculationService.calculateVacationPay(vacationParams));
+	@Test
+	void VacationPayControllerTest_WithHolidays() {
+		VacationRequestParameters parameters = new VacationRequestParameters();
+		parameters.setAverageSalary(AVERAGE_SALARY);
+		parameters.setVacationDays(VACATION_DAYS);
+		parameters.setStartDate(Holiday.NEW_YEAR_HOLIDAYS.getDates().findFirst().get());
+
+		var result = payCalculationService.calculateVacationPay(parameters);
+
+		// 50000.0 / 29.3 * (14 - 8(Holidays)) = 10238.91
+		assertEquals(10238.91, result);
 	}
 
 	@Test
@@ -61,9 +66,7 @@ public class VacationPayCalculatorServiceTest {
 		VacationRequestParameters vacationParams = new VacationRequestParameters();
 		vacationParams.setAverageSalary(AVERAGE_SALARY);
 		vacationParams.setVacationDays(VACATION_DAYS);
-		vacationParams.setStartDate(START_DATE);
-
-		when(holidayCalendarService.isHoliday(HOLIDAY_DATE)).thenReturn(true);
+		vacationParams.setStartDate(LocalDate.of(2025, 7, 20));
 
 		// 50000.00 / 29.3 * 14 = 23890.78
 		assertEquals(23890.78, payCalculationService.calculateVacationPay(vacationParams));

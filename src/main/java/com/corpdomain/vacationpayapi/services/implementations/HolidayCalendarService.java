@@ -1,35 +1,28 @@
 package com.corpdomain.vacationpayapi.services.implementations;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.springframework.stereotype.Service;
 
+import com.corpdomain.vacationpayapi.helpers.Holiday;
 import com.corpdomain.vacationpayapi.services.IHolidayCalendarService;
 
 @Service
 public class HolidayCalendarService implements IHolidayCalendarService {
-	public static final Set<LocalDate> HOLIDAYS = Set.of(
-			LocalDate.of(2025, 2, 23),
-			LocalDate.of(2025, 3, 8),
-			LocalDate.of(2025, 5, 1),
-			LocalDate.of(2025, 5, 9),
-			LocalDate.of(2025, 6, 12),
-			LocalDate.of(2025, 11, 4),
-			LocalDate.of(2025, 1, 1),
-			LocalDate.of(2025, 1, 2),
-			LocalDate.of(2025, 1, 3),
-			LocalDate.of(2025, 1, 4),
-			LocalDate.of(2025, 1, 5),
-			LocalDate.of(2025, 1, 6),
-			LocalDate.of(2025, 1, 8));
+	public static final ArrayList<Holiday> holidays = new ArrayList<>(Arrays.asList(Holiday.values()));
 
 	@Override
 	public boolean isHoliday(LocalDate date) {
-		return HOLIDAYS.stream().anyMatch(holiday -> {
-			return holiday.getDayOfMonth() == date.getDayOfMonth()
-					&& holiday.getMonthValue() == date.getMonthValue();
+		return holidays.stream().anyMatch(holiday -> {
+			return holiday.getMonth() == date.getMonthValue()
+					&& holiday.getDays().anyMatch(day -> day == date.getDayOfMonth());
 		});
 	}
 
+	@Override
+	public boolean isWeekend(DayOfWeek dayOfWeek) {
+		return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+	}
 }
